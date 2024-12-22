@@ -11,11 +11,12 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 mkdocs = "*"
 pygtrie = "*"
+watchdog = "^6.0.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 ruff = "*"
 semantic_version = "*"
 
@@ -27,11 +28,9 @@ exclude = ["tests", "docs", "build", "dist", "venv", "venv3", "venv3.6", "venv3.
 [tool.ruff.lint.flake8-quotes]
 inline-quotes = "double"
 
-[tool.taskipy.tasks]
-test = "echo 'test'"
-
 [tool.semantic_release.remote]
 type = "github"
+
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -39,3 +38,8 @@ exclude = ["test.*"]
 
 [tool.poetry.plugins."mkdocs.plugins"]
 ezlinks = "mkdocs_obsidian_links.plugin:LinksPlugin"
+
+
+[tool.poetry-exec-plugin.commands]
+test="cd test && mkdocs serve"
+watch="python watchdog.py"
