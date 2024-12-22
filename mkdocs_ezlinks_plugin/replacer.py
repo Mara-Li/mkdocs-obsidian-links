@@ -78,7 +78,7 @@ class EzLinksReplacer:
                             raise BrokenLink(f"'{link.target}' not found.")
                         link.target = search_result
 
-                    link.target = quote(posixpath.relpath(link.target, abs_from))
+                    link.target = quote(posixpath.relpath(link.target, abs_from).replace('\\', '/'))
                     return link.render()
         except BrokenLink as ex:
             # Log these out as Debug messages, as the regular mkdocs
