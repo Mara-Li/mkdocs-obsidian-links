@@ -52,6 +52,7 @@ ezlinks = "mkdocs_obsidian_links.plugin:LinksPlugin"
 
 [tool.poetry-exec-plugin.commands]
 test="cd test && mkdocs serve"
-watch="python watchdog.py"
+watch="python watch_install.py"
 build="python -m build"
 ruff="ruff format"
+upload="poetry publish --build"
