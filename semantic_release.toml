@@ -12,12 +12,13 @@ logging_use_named_masks = false
 major_on_zero = true
 allow_zero_version = true
 no_git_verify = false
-tag_format = "{version}"
+tag_format = "v{version}"
 
 [semantic_release.branches.main]
 match = "(main|master)"
 prerelease_token = "rc"
 prerelease = false
+
 
 [semantic_release.changelog]
 exclude_commit_patterns = []
