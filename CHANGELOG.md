@@ -59,6 +59,9 @@ fix #1
 - Build for fork
   ([`1f74ae2`](https://github.com/Mara-Li/mkdocs-obsidian-links/commit/1f74ae20c964caea7b0b01eabe64027153c08e0b))
 
+- Change semantic_release configuration
+  ([`12a9508`](https://github.com/Mara-Li/mkdocs-obsidian-links/commit/12a95083b05915ff7b47348a013a0df5a3f40700))
+
 - Do not rerun the watchdog when changed, only watch file in mkdocs_obsidian_links
   ([`53960eb`](https://github.com/Mara-Li/mkdocs-obsidian-links/commit/53960ebf6a1cec0a1a1eab874083a63e5009c271))
 
