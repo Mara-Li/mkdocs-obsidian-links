@@ -6,3 +6,5 @@ Welcome, world!
 
 ![](./static/images/Eden_bonne_etoile_commission_perseith.webp)
 ![[Eden_bonne_etoile_commission_perseith.webp]]
+
+[[disambiguation]] # index testing
