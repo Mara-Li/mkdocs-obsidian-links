@@ -15,11 +15,11 @@ python = "^3.12"
 mkdocs = "*"
 pygtrie = "*"
 
-
 [tool.poetry.group.dev.dependencies]
 ruff = "*"
 watchdog = "^6.0.0"
 python-semantic-release = "^9.15.2"
+build = "^1.2.2.post1"
 
 [tool.ruff.lint]
 select = ["PTH", "ANN", "N", "Q", "PL", "E", "F", "I"]
