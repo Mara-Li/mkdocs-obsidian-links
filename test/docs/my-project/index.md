@@ -5,7 +5,7 @@
 
 [working link no ext](project.md)
 
-![test](puppy.png)
+![test - not working](puppy.png)
 ![test](puppy.jpg)
 
 ![](puppy.png)
