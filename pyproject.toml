@@ -1,0 +1,41 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "mkdocs-obsidian-links"
+version = "1.0.0"
+description = "A Mkdocs plugin that makes linking to other documents easy."
+authors = ["Mara-Li <lili.simonetti@outlook.fr>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+mkdocs = "*"
+pygtrie = "*"
+
+[tool.poetry.dev-dependencies]
+ruff = "*"
+semantic_version = "*"
+
+[tool.ruff]
+select = ["PTH", "ANN", "N", "Q", "PL", "E", "F", "I"]
+ignore = ["E501"]
+exclude = ["tests", "docs", "build", "dist", "venv", "venv3", "venv3.6", "venv3.7", "venv3.8", "venv3.9", "venv3.10", "__pycache__"]
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "double"
+
+[tool.taskipy.tasks]
+test = "echo 'test'"
+
+[tool.semantic_release.remote]
+type = "github"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["test.*"]
+
+[tool.poetry.plugins."mkdocs.plugins"]
+ezlinks = "mkdocs_obsidian_links.plugin:LinksPlugin"
