@@ -51,7 +51,7 @@ class PackageWatchHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    package_path = "."  # Chemin vers le package
+    package_path = "mkdocs_obsidian_links"  # Chemin vers le package
     mkdocs_path = "./test"  # Chemin vers le dossier contenant MkDocs
 
     # Vérifie si le dossier MkDocs existe
