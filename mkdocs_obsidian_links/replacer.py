@@ -2,18 +2,18 @@ import posixpath
 import re
 from typing import Match
 from urllib.parse import quote
-from .types import EzLinksOptions, BrokenLink
+from .types import LinksOptions, BrokenLink
 from .scanners.base_link_scanner import BaseLinkScanner
 from .file_mapper import FileMapper
 
 
-class EzLinksReplacer:
+class LinksReplacer:
     def __init__(
             self,
             root: str,
             file_map: FileMapper,
             use_directory_urls: bool,
-            options: EzLinksOptions,
+            options: LinksOptions,
             logger):
         self.root = root
         self.file_map = file_map

@@ -1,16 +1,12 @@
 *Fork*  
 To install this fork :   
-`pip install mkdocs-ezlinked-plugin`  
+`pip install mkdocs-obsidian-links`  
 
-# mkdocs-ezlinks-plugin
-
-![](logo.png)
+# Mkdocs - Obsidian Wikilinks 
 
 Plugin for mkdocs which enables easier linking between pages.
 
-This plugin was written in order to provide an up-to-date and
-feature complete plugin for easily referencing documents
-with a variety of features:
+This plugin was written in order to provide an up-to-date and feature complete plugin for easily referencing documents with a variety of features:
 
 * Optimized file name lookup
 * Code Block Preservation
@@ -21,7 +17,7 @@ with a variety of features:
 
 # Install
 ```
-pip install mkdocs-ezlinks-plugin
+pip install mkdocs-obsidian-links
 ```
 
 Edit your mkdocs configuration file to enable the plugin:
@@ -32,45 +28,6 @@ plugins:
 ```
 > **NOTE**  
 >   If you have no plugins entry in your config file yet, you'll likely also want to add the search plugin. MkDocs enables it by default if there is no plugins entry set, but now you have to enable it explicitly.
-
-# Release Log
-
-## Release 0.1.14
-This is a bugfix release.
-
-Issues addressed:
-  * GH issue #35, `Links between deeply nested subfolders fails.`
-    Dev @Mara-Li reported an issue with wikilinks between deeply nested subfolders failing due to an incorrectly
-    rendered relative link to the file.
-
-  * An unreported Windows usage issue
-    It's possible this bug existed for quite some time. Basically, on Windows, there was disagreement between the
-    path separators used at different points in the file mapping and searching process. This unifies it to store
-    and search for paths only with the `/` delimiter instead of the OS defined separator.
-
-
-## Release 0.1.13
-Adds support for Reference Link parsing. This is to support certain Foam editors, which generate [Reference Links](https://spec.commonmark.org/0.29/#reference-link).
-
-Issues Addressed:
-  * GH Issue #31, `Add support for reference link definitions`. Allows compatibility with certain Foam editors which generate Reference Links.
-
-## Release 0.1.12
-This is a bugfix release.
-
-Issues addressed:
-  * GH issue #25, `Absolute links not using http:// or https:// are treated as relative`.
-    Dev @robbcrg (thanks!) reported that links with protocol schemes other than those two should also be treated as
-    absolute links. The regex will exclude any link from a conformant protocol scheme from being converted using EzLinks.
-
-  * GH Issue #27, `Dictionary file cache is not being leveraged`.
-    An inverted comparison led to the fast file cache lookup never really being exercised. Now, if a filename is unique, it will find it in the fast file cache first, saving a more expensive full trie lookup.
-
-## Release 0.1.11
-This is a bugfix release. The prior release switched from a dictionary lookup to a prefix trie lookup strategy, which allowed for better disambiguation between links, but is more expensive. The bug was that, even if a link was direct, it would trigger a full trie search. Now, direct links
-are checked and returned directly if the file exists.
-
-Additionally, a slight performance improvement was made where, in the case that a filename is unique to the entire site, it will rely on a fast dictionary lookup instead of a trie lookup.
 
 # Configuration Options
 ```

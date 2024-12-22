@@ -26,7 +26,7 @@ class Link:
 
 
 @dataclass
-class EzLinksOptions:
+class LinksOptions:
     """Dataclass to hold typed options from the configuration."""
 
     wikilinks: bool

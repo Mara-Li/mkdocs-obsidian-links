@@ -4,13 +4,13 @@ from typing import List
 import pygtrie
 import mkdocs
 
-from .types import EzLinksOptions
+from .types import LinksOptions
 
 
 class FileMapper:
     def __init__(
             self,
-            options: EzLinksOptions,
+            options: LinksOptions,
             root: str,
             files: List[mkdocs.structure.pages.Page],
             logger=None):

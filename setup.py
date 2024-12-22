@@ -1,22 +1,33 @@
+import tomllib
+
 from setuptools import setup, find_packages
+import tomllib as toml
 
 description = "A mkdocs plugin that makes linking to other documents easy."
 long_description = description
 
-version="0.3.3"
+with open(".version", "r") as f:
+    version = f.read().strip()
+
+
+# Charger le Pipfile
+with open("Pipfile", "rb") as f:
+    pipfile = tomllib.load(f)
+
+# Extraire les dépendances
+required = pipfile.get("packages", {})
 
 with open("README.md", "r") as f:
     long_description = f.read()
-with open("requirements.txt", "r") as f:
-    required=f.read().splitlines()
+
 setup(
-    name="mkdocs-ezlinked-plugin",
+    name="mkdocs-obsidian-links",
     version=version,
     description=description,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords="mkdocs, wikilinks, ezlinks, obsidian, roam",
-    url="https://github.com/Mara-Li/mkdocs-ezlinks-plugin",
+    keywords="mkdocs, wikilinks, obsidian, roam",
+    url="https://github.com/Mara-Li/mkdocs-obsidian-links",
     author="Mara-Li",
     author_email="Mara-Li@outlook.fr",
     license="MIT",
@@ -31,6 +42,6 @@ setup(
     ],
     packages=find_packages(exclude=["test.*"]),
     entry_points={
-        "mkdocs.plugins": ["ezlinks = mkdocs_ezlinks_plugin.plugin:EzLinksPlugin"]
+        "mkdocs.plugins": ["ezlinks = mkdocs_obsidian_links.plugin:LinksPlugin"]
     },
 )

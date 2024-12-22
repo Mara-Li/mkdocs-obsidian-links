@@ -1,7 +1,7 @@
 Welcome, world!
 
-![[Puppy]]  
+![[puppy]] #no extension
 
-![](Puppy.md)
+![](puppy.jpg) #not the entire path
 
 

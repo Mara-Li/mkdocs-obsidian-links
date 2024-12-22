@@ -1,31 +1,34 @@
 import logging
 from typing import List
 
-import mkdocs
+from mkdocs.plugins import BasePlugin
+from mkdocs.config import config_options
+from mkdocs.structure.files import File
+
 
 from .file_mapper import FileMapper
-from .replacer import EzLinksReplacer
+from .replacer import LinksReplacer
 from .scanners.md_link_scanner import MdLinkScanner
 from .scanners.wiki_link_scanner import WikiLinkScanner
 from .scanners.reference_link_scanner import ReferenceLinkScanner
-from .types import EzLinksOptions
+from .types import LinksOptions
 
 LOGGER = logging.getLogger(f"mkdocs.plugins.{__name__}")
 
 
-class EzLinksPlugin(mkdocs.plugins.BasePlugin):
+class LinksPlugin(BasePlugin):
     config_scheme = (
-        ('wikilinks',  mkdocs.config.config_options.Type(bool, default=True)),
-        ('warn_ambiguities', mkdocs.config.config_options.Type(bool, default=False)),
-        ('reference_links', mkdocs.config.config_options.Type(bool, default=False))
+        ('wikilinks',  config_options.Type(bool, default=True)),
+        ('warn_ambiguities', config_options.Type(bool, default=False)),
+        ('reference_links', config_options.Type(bool, default=False))
     )
 
     def init(self, config):
-        self.replacer = EzLinksReplacer(
+        self.replacer = LinksReplacer(
             root=config['docs_dir'],
             file_map=self.file_mapper,
             use_directory_urls=config['use_directory_urls'],
-            options=EzLinksOptions(**self.config),
+            options=LinksOptions(**self.config),
             logger=LOGGER
         )
 
@@ -40,9 +43,9 @@ class EzLinksPlugin(mkdocs.plugins.BasePlugin):
         self.replacer.compile()
 
     # Build a fast lookup of all files (by file name)
-    def on_files(self, files: List[mkdocs.structure.files.File], config):
+    def on_files(self, files: List[File], config):
         self.file_mapper = FileMapper(
-            options=EzLinksOptions(**self.config),
+            options=LinksOptions(**self.config),
             root=config['docs_dir'],
             files=files,
             logger=LOGGER
