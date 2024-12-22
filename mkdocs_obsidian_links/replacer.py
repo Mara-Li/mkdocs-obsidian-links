@@ -9,12 +9,13 @@ from .file_mapper import FileMapper
 
 class LinksReplacer:
     def __init__(
-            self,
-            root: str,
-            file_map: FileMapper,
-            use_directory_urls: bool,
-            options: LinksOptions,
-            logger):
+        self,
+        root: str,
+        file_map: FileMapper,
+        use_directory_urls: bool,
+        options: LinksOptions,
+        logger,
+    ):
         self.root = root
         self.file_map = file_map
         self.use_directory_urls = use_directory_urls
@@ -35,17 +36,22 @@ class LinksReplacer:
     # built in code fence skipping (individual link scanners don't
     # have to worry about them.
 
-    def file_exists(self, file_path: str) :
-        if file_path.startswith("http://") or file_path.startswith("https://") or file_path.startswith("mailto:") or file_path.startswith("www.") :
+    def file_exists(self, file_path: str):
+        if (
+            file_path.startswith("http://")
+            or file_path.startswith("https://")
+            or file_path.startswith("mailto:")
+            or file_path.startswith("www.")
+        ):
             return True
-        if posixpath.exists(file_path) :
+        if posixpath.exists(file_path):
             return file_path
         return None
 
     def compile(self):
-        patterns = '|'.join([scanner.pattern() for scanner in self.scanners])
+        patterns = "|".join([scanner.pattern() for scanner in self.scanners])
         self.regex = re.compile(
-            fr'''
+            rf"""
             (?: # Attempt to match a code block
                 [`]{{3}}
                 (?:[\w\W]*?)
@@ -57,7 +63,9 @@ class LinksReplacer:
             (?:
                 {patterns}
             )
-            ''', re.X | re.MULTILINE)
+            """,
+            re.X | re.MULTILINE,
+        )
 
     def _do_replace(self, match: Match) -> str:
         abs_from = posixpath.dirname(posixpath.join(self.root, self.path))
@@ -68,7 +76,9 @@ class LinksReplacer:
 
                     # Do some massaging of the extracted results
                     if not link:
-                        raise BrokenLink(f"Could not extract link from '{match.group(0)}'")
+                        raise BrokenLink(
+                            f"Could not extract link from '{match.group(0)}'"
+                        )
                     broken_link = False
                     # Handle case of local page anchor
                     if not link.target:
@@ -83,16 +93,22 @@ class LinksReplacer:
                         search_result = self.file_map.search(self.path, link.target)
 
                         if not self.use_directory_urls:
-                            search_result = search_result + '.md' if '.' not in search_result else search_result
-                        if not search_result :
+                            search_result = (
+                                search_result + ".md"
+                                if "." not in search_result
+                                else search_result
+                            )
+                        if not search_result:
                             raise BrokenLink(f"'{link.target}' not found.")
                         link.target = search_result
                         broken_link = False
                         if not self.file_exists(search_result):
                             broken_link = True
 
-                    link.target = quote(posixpath.relpath(link.target, abs_from).replace('\\', '/'))
-                    return link.render(not_found = broken_link)
+                    link.target = quote(
+                        posixpath.relpath(link.target, abs_from).replace("\\", "/")
+                    )
+                    return link.render(not_found=broken_link)
         except BrokenLink as ex:
             # Log these out as Debug messages, as the regular mkdocs
             # strict mode will log out broken links.

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 class BrokenLink(Exception):
-    #Ignore these
+    # Ignore these
     pass
 
 
@@ -21,9 +21,9 @@ class Link:
         img = "!" if self.image else ""
         anchor = f"#{self.anchor}" if self.anchor else ""
         title = f' "{self.title}"' if self.title else ""
-        broken= "{: .ezlinks_not_found}" if not_found else ""
+        broken = "{: .ezlinks_not_found}" if not_found else ""
         if not_found:
-            img=""
+            img = ""
         return f"{img}[{self.text}]({self.target}{anchor}{title}){broken}"
 
 

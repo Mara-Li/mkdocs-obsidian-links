@@ -18,25 +18,25 @@ LOGGER = logging.getLogger(f"mkdocs.plugins.{__name__}")
 
 class LinksPlugin(BasePlugin):
     config_scheme = (
-        ('wikilinks',  config_options.Type(bool, default=True)),
-        ('warn_ambiguities', config_options.Type(bool, default=False)),
-        ('reference_links', config_options.Type(bool, default=False))
+        ("wikilinks", config_options.Type(bool, default=True)),
+        ("warn_ambiguities", config_options.Type(bool, default=False)),
+        ("reference_links", config_options.Type(bool, default=False)),
     )
 
     def init(self, config):
         self.replacer = LinksReplacer(
-            root=config['docs_dir'],
+            root=config["docs_dir"],
             file_map=self.file_mapper,
-            use_directory_urls=config['use_directory_urls'],
+            use_directory_urls=config["use_directory_urls"],
             options=LinksOptions(**self.config),
-            logger=LOGGER
+            logger=LOGGER,
         )
 
         self.replacer.add_scanner(MdLinkScanner())
-        if self.config['wikilinks']:
+        if self.config["wikilinks"]:
             self.replacer.add_scanner(WikiLinkScanner())
-        
-        if self.config['reference_links']:
+
+        if self.config["reference_links"]:
             self.replacer.add_scanner(ReferenceLinkScanner())
 
         # Compile the regex once
@@ -46,9 +46,9 @@ class LinksPlugin(BasePlugin):
     def on_files(self, files: List[File], config):
         self.file_mapper = FileMapper(
             options=LinksOptions(**self.config),
-            root=config['docs_dir'],
+            root=config["docs_dir"],
             files=files,
-            logger=LOGGER
+            logger=LOGGER,
         )
 
         # After the file map has been built, initialize what we can that will

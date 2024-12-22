@@ -7,20 +7,18 @@ import mkdocs
 from .types import LinksOptions
 
 
-
-
-
 class FileMapper:
     def __init__(
-            self,
-            options: LinksOptions,
-            root: str,
-            files: List[mkdocs.structure.pages.Page],
-            logger=None):
+        self,
+        options: LinksOptions,
+        root: str,
+        files: List[mkdocs.structure.pages.Page],
+        logger=None,
+    ):
         self.options = options
         self.root = root
         self.file_cache = {}
-        self.file_trie = pygtrie.StringTrie(separator='/')
+        self.file_trie = pygtrie.StringTrie(separator="/")
         self.logger = logger
 
         # Drop any files outside of the root of the docs dir
@@ -31,7 +29,7 @@ class FileMapper:
 
     def _store_file(self, file_path):
         # Treat paths as posix format, regardless of OS
-        file_path = file_path.replace('\\', '/')
+        file_path = file_path.replace("\\", "/")
         # Store the pathwise reversed representation of the file with and
         # without file extension.
         search_exprs = [file_path, posixpath.splitext(file_path)[0]]
@@ -44,9 +42,9 @@ class FileMapper:
                 self.file_cache[file_name].append(file_path)
 
             # Store in trie
-            components = list(search_expr.split('/'))
+            components = list(search_expr.split("/"))
             components.reverse()
-            self.file_trie['/'.join(components)] = file_path
+            self.file_trie["/".join(components)] = file_path
 
         # Reduce the dictionary to only search terms that are unique
         self.file_cache = {k: v for (k, v) in self.file_cache.items() if len(v) == 1}
@@ -54,9 +52,14 @@ class FileMapper:
     def search(self, from_file: str, file_path: str):
         abs_to = file_path
         # Detect if it's an absolute link, then just return it directly
-        if abs_to.startswith('http://') or abs_to.startswith('https://') or abs_to.startswith('mailto:') or abs_to.startswith("www."):
+        if (
+            abs_to.startswith("http://")
+            or abs_to.startswith("https://")
+            or abs_to.startswith("mailto:")
+            or abs_to.startswith("www.")
+        ):
             return abs_to
-        if abs_to.startswith('/'):
+        if abs_to.startswith("/"):
             return posixpath.join(self.root, abs_to[1:])
         else:
             # Check if it is a direct link first
@@ -71,7 +74,7 @@ class FileMapper:
             if posixpath.basename(file_name) in self.file_cache:
                 abs_to = self.file_cache[file_name][0]
             else:
-                search_for = list(file_path.split('/'))
+                search_for = list(file_path.split("/"))
                 search_for.reverse()
                 search_for = "/".join(search_for)
                 # If we have an _exact_ match in the trie, we don't need to search
@@ -87,11 +90,14 @@ class FileMapper:
                     # be able to get the result closest to the file doing the linking
                     if has_ambiguity:
                         file_path = posixpath.dirname(from_file)
-                        components = file_path.split('/')
+                        components = file_path.split("/")
                         components.reverse()
                         for path_component in components:
                             search_for += f"/{path_component}"
-                            if self.file_trie.has_subtrie(search_for) or search_for in self.file_trie:
+                            if (
+                                self.file_trie.has_subtrie(search_for)
+                                or search_for in self.file_trie
+                            ):
                                 new_vals = self.file_trie.values(search_for)
                                 if len(new_vals) == 1:
                                     abs_to = new_vals[0]
@@ -104,10 +110,15 @@ class FileMapper:
                         for idx, file in enumerate(values):
                             active = "<--- (Selected)" if idx == 0 else ""
                             ambiguities += f"  {idx}: {file} {active}\n"
-                        log_fn = self.logger.warning if self.options.warn_ambiguities else self.logger.debug
-                        log_fn(f"[EzLink] Link ambiguity detected.\n"
-                               f"File: '{from_file}'\n"
-                               f"Link: '{search_for}'\n"
-                               "Ambiguities:\n" + ambiguities)
+                        log_fn = (
+                            self.logger.warning
+                            if self.options.warn_ambiguities
+                            else self.logger.debug
+                        )
+                        log_fn(
+                            f"[EzLink] Link ambiguity detected.\n"
+                            f"File: '{from_file}'\n"
+                            f"Link: '{search_for}'\n"
+                            "Ambiguities:\n" + ambiguities
+                        )
         return posixpath.join(self.root, abs_to)
-
