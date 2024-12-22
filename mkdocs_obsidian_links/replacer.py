@@ -1,6 +1,6 @@
 import posixpath
 import re
-from typing import Match
+from typing import Match, Union
 from urllib.parse import quote
 from .types import LinksOptions, BrokenLink
 from .scanners.base_link_scanner import BaseLinkScanner
@@ -36,7 +36,7 @@ class LinksReplacer:
     # built in code fence skipping (individual link scanners don't
     # have to worry about them.
 
-    def file_exists(self, file_path: str):
+    def file_exists(self, file_path: str) -> Union[bool, str]:
         if (
             file_path.startswith("http://")
             or file_path.startswith("https://")
@@ -45,8 +45,12 @@ class LinksReplacer:
         ):
             return True
         if posixpath.exists(file_path):
-            return file_path
-        return None
+            return True
+        # try with index file
+        if posixpath.exists(file_path.replace(".md", "") + "/index.md"):
+            return "is_index"
+
+        return False
 
     def compile(self):
         patterns = "|".join([scanner.pattern() for scanner in self.scanners])
@@ -86,6 +90,8 @@ class LinksReplacer:
                             link.target = posixpath.join(self.root, self.path)
                             if not self.file_exists(link.target):
                                 broken_link = True
+                            elif self.file_exists(link.target) == "is_index":
+                                link.target = link.target.replace(".md", "") + "/index.md"
                         else:
                             raise BrokenLink(f"No target for link '{match.group(0)}'")
                     else:
@@ -104,6 +110,10 @@ class LinksReplacer:
                         broken_link = False
                         if not self.file_exists(search_result):
                             broken_link = True
+                        elif self.file_exists(search_result) == "is_index":
+                            link.target = link.target.replace(".md", "") + "/index.md"
+                        else:
+                            link.target = search_result
 
                     link.target = quote(
                         posixpath.relpath(link.target, abs_from).replace("\\", "/")
