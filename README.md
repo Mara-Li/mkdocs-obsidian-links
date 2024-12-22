@@ -31,6 +31,10 @@ plugins:
 
 # Configuration Options
 ```
+markdown_extensions:
+  - attr_list
+extra_css:
+  - css/extra.css
 plugins:
     - search
     - ezlinks:
@@ -38,6 +42,20 @@ plugins:
         wikilinks: {true|false}
         reference_links: {true|false}
 ```
+
+## Not found
+If a file is not found, the plugin will add the `attr_list` class `ezlinks_not_found` to the link. By default, obviously, the plugin won't add any style to your site. You need:
+- Adding the support for `attr_list` in the `markdown_extensions` section of your `mkdocs.yml` file.
+- Add an `extra_css` file to your `mkdocs.yml` file.
+- Create a CSS file in your `docs_dir` with the following content:
+```css
+.ezlinks_not_found {
+    color: red;
+}
+```
+
+You can check the testing files to see how it can be configured.
+
 ## warn_ambiguities
 Determines whether to warn when an abmiguous link is encountered. An ambiguous link is one that would have more than one possible targets. For example, if you had the following document setup:
 

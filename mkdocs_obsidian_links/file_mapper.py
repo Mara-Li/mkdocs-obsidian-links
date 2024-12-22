@@ -7,6 +7,9 @@ import mkdocs
 from .types import LinksOptions
 
 
+
+
+
 class FileMapper:
     def __init__(
             self,
@@ -51,6 +54,8 @@ class FileMapper:
     def search(self, from_file: str, file_path: str):
         abs_to = file_path
         # Detect if it's an absolute link, then just return it directly
+        if abs_to.startswith('http://') or abs_to.startswith('https://') or abs_to.startswith('mailto:') or abs_to.startswith("www."):
+            return abs_to
         if abs_to.startswith('/'):
             return posixpath.join(self.root, abs_to[1:])
         else:
@@ -69,7 +74,6 @@ class FileMapper:
                 search_for = list(file_path.split('/'))
                 search_for.reverse()
                 search_for = "/".join(search_for)
-
                 # If we have an _exact_ match in the trie, we don't need to search
                 if search_for in self.file_trie:
                     abs_to = self.file_trie[search_for]
@@ -106,3 +110,4 @@ class FileMapper:
                                f"Link: '{search_for}'\n"
                                "Ambiguities:\n" + ambiguities)
         return posixpath.join(self.root, abs_to)
+

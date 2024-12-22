@@ -17,8 +17,13 @@ nav:
 theme: readthedocs
 docs_dir: 'docs'
 use_directory_urls: false
+markdown_extensions:
+    - attr_list
+extra_css:
+    - static/broken_link.css
 plugins:
     - search
     - ezlinks:
        wikilinks: true
        reference_links: true
+

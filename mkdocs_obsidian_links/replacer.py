@@ -34,6 +34,14 @@ class LinksReplacer:
     # Compiles all scanner patterns as a multi-pattern search, with
     # built in code fence skipping (individual link scanners don't
     # have to worry about them.
+
+    def file_exists(self, file_path: str) :
+        if file_path.startswith("http://") or file_path.startswith("https://") or file_path.startswith("mailto:") or file_path.startswith("www.") :
+            return True
+        if posixpath.exists(file_path) :
+            return file_path
+        return None
+
     def compile(self):
         patterns = '|'.join([scanner.pattern() for scanner in self.scanners])
         self.regex = re.compile(
@@ -61,25 +69,30 @@ class LinksReplacer:
                     # Do some massaging of the extracted results
                     if not link:
                         raise BrokenLink(f"Could not extract link from '{match.group(0)}'")
-
+                    broken_link = False
                     # Handle case of local page anchor
                     if not link.target:
                         if link.anchor:
                             link.target = posixpath.join(self.root, self.path)
+                            if not self.file_exists(link.target):
+                                broken_link = True
                         else:
                             raise BrokenLink(f"No target for link '{match.group(0)}'")
                     else:
                         # Otherwise, search for the target through the file map
                         search_result = self.file_map.search(self.path, link.target)
+
                         if not self.use_directory_urls:
                             search_result = search_result + '.md' if '.' not in search_result else search_result
-
-                        if not search_result:
+                        if not search_result :
                             raise BrokenLink(f"'{link.target}' not found.")
                         link.target = search_result
+                        broken_link = False
+                        if not self.file_exists(search_result):
+                            broken_link = True
 
                     link.target = quote(posixpath.relpath(link.target, abs_from).replace('\\', '/'))
-                    return link.render()
+                    return link.render(not_found = broken_link)
         except BrokenLink as ex:
             # Log these out as Debug messages, as the regular mkdocs
             # strict mode will log out broken links.

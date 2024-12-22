@@ -1,0 +1,5 @@
+.ezlinks_not_found {
+    color: red;
+    background-color: rgba(227, 227, 227, 0.18);
+    border: 1px solid red;
+}
