@@ -17,6 +17,7 @@ dev = [
     "watchdog>=2.1.6",
     "python-semantic-release>=9.15.2",
     "build>=0.6.0",
+    "rich>=13.9.4",
 ]
 
 [tool.ruff.lint]

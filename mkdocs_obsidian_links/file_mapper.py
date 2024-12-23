@@ -28,6 +28,7 @@ class FileMapper:
             self._store_file(file.src_uri)
 
     def _store_file(self, file_path):
+        print("cc")
         # Treat paths as posix format, regardless of OS
         file_path = file_path.replace("\\", "/")
         # Store the pathwise reversed representation of the file with and
