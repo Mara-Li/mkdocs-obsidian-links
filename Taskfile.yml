@@ -14,7 +14,7 @@ tasks:
     desc: "Clean up old build files"
     cmds:
       - echo "Cleaning build directories..."
-      - rm -r -Force {{pyproject_dir}}/dist {{pyproject_dir}}/*.egg-info {{pyproject_dir}}/.pytest_cache
+      - rm -r -Force {{.pyproject_dir}}/dist {{.pyproject_dir}}/*.egg-info {{.pyproject_dir}}/.pytest_cache
 
   version:
     desc: "Run semantic-release to determine and bump the version"
@@ -31,7 +31,7 @@ tasks:
   publish:
     desc: "Publish the package to PyPI"
     cmds:
-      - echo "Publishing {{package_name}} to PyPI..."
+      - echo "Publishing {{.package_name}} to PyPI..."
       - uv run semantic_release publish
 
     watch:
@@ -40,8 +40,8 @@ tasks:
         package_path: "mkdocs-obsidian-wikilinks"
         mkdocs_path: "../mara-li"
       cmds:
-        - echo "Starting Watchdog for {{package_path}} with MkDocs at {{mkdocs_path}}..."
-        - uv python watch.py {{package_path}} {{mkdocs_path}}
+        - echo "Starting Watchdog for {{.package_path}} with MkDocs at {{.mkdocs_path}}..."
+        - uv python watch.py {{.package_path}} {{.mkdocs_path}}
 
   release:
     desc: "Perform a full release: version bump, build, and publish"
