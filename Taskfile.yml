@@ -1,0 +1,52 @@
+version: "3"
+
+vars:
+  package_name: "mkdocs-obsidian-wikilinks"
+  pyproject_dir: "{{.Taskfile.Dir}}"
+
+tasks:
+  default:
+    desc: "Run the full release process"
+    cmds:
+      - task: release
+
+  clean:
+    desc: "Clean up old build files"
+    cmds:
+      - echo "Cleaning build directories..."
+      - rm -r -Force {{pyproject_dir}}/dist {{pyproject_dir}}/*.egg-info {{pyproject_dir}}/.pytest_cache
+
+  version:
+    desc: "Run semantic-release to determine and bump the version"
+    cmds:
+      - echo "Running semantic-release to bump the version..."
+      - uv run semantic_release version
+
+  build:
+    desc: "Build the Python package"
+    cmds:
+      - echo "Building the package..."
+      - uv build
+
+  publish:
+    desc: "Publish the package to PyPI"
+    cmds:
+      - echo "Publishing {{package_name}} to PyPI..."
+      - uv run semantic_release publish
+
+    watch:
+      desc: "Start the Watchdog with custom paths"
+      vars:
+        package_path: "mkdocs-obsidian-wikilinks"
+        mkdocs_path: "../mara-li"
+      cmds:
+        - echo "Starting Watchdog for {{package_path}} with MkDocs at {{mkdocs_path}}..."
+        - uv python watch.py {{package_path}} {{mkdocs_path}}
+
+  release:
+    desc: "Perform a full release: version bump, build, and publish"
+    cmds:
+      - task: clean
+      - task: version
+      - task: build
+      - task: publish
