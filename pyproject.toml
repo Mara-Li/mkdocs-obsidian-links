@@ -7,17 +7,17 @@ authors = [
 license = "MIT"
 readme = "README.md"
 dependencies = [
-    "mkdocs>=1.4",
-    "pygtrie>=2.3.2",
+    "mkdocs",
+    "pygtrie",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.1.0",
-    "watchdog>=2.1.6",
-    "python-semantic-release>=9.15.2",
-    "build>=0.6.0",
-    "rich>=13.9.4",
+    "ruff",
+    "watchdog",
+    "python-semantic-release",
+    "build",
+    "rich",
 ]
 
 [tool.ruff.lint]
