@@ -69,7 +69,9 @@ class FileMapper:
                 return potential_path
 
             # Handle .index.md cases explicitly
-            if potential_path.endswith("/index") and posixpath.exists(potential_path + ".md"):
+            if potential_path.endswith("/index") and posixpath.exists(
+                potential_path + ".md"
+            ):
                 return potential_path + ".md"
 
             # It's an EzLink that must be searched

@@ -39,11 +39,15 @@ class LinksReplacer:
 
     def file_exists(self, file_path: str, source: str) -> Union[bool, str]:
         if (
-            file_path.startswith("http://")
-            or file_path.startswith("https://")
-            or file_path.startswith("mailto:")
-            or file_path.startswith("www.")
-        ) or posixpath.exists(file_path) or posixpath.exists(file_path + ".md"):
+            (
+                file_path.startswith("http://")
+                or file_path.startswith("https://")
+                or file_path.startswith("mailto:")
+                or file_path.startswith("www.")
+            )
+            or posixpath.exists(file_path)
+            or posixpath.exists(file_path + ".md")
+        ):
             return True
 
         # try with index file

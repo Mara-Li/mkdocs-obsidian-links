@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "mkdocs-obsidian-links"
-version = "1.0.1"
+version = "1.0.2"
 description = "A Mkdocs plugin that makes linking to other documents easy."
 authors = ["Mara-Li <lili.simonetti@outlook.fr>"]
 license = "MIT"
@@ -41,6 +41,6 @@ test="cd test && mkdocs serve"
 watch="poetry run python watch_install.py"
 build="python -m build"
 ruff="ruff format"
-upload="poetry publish --build"
+silbuphsilbu="poetry publish --build"
 release="poetry run semantic-release publish"
 
