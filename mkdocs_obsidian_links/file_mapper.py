@@ -64,8 +64,13 @@ class FileMapper:
         else:
             # Check if it is a direct link first
             from_dir = posixpath.dirname(from_file)
-            if posixpath.exists(posixpath.join(self.root, from_dir, file_path)):
-                return posixpath.join(self.root, from_dir, file_path)
+            potential_path = posixpath.join(self.root, from_dir, file_path)
+            if posixpath.exists(potential_path):
+                return potential_path
+
+            # Handle .index.md cases explicitly
+            if potential_path.endswith("/index") and posixpath.exists(potential_path + ".md"):
+                return potential_path + ".md"
 
             # It's an EzLink that must be searched
             file_name = posixpath.basename(file_path)

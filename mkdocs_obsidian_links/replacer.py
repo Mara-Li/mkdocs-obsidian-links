@@ -1,3 +1,4 @@
+import pathlib
 import posixpath
 import re
 from typing import Match, Union
@@ -36,20 +37,16 @@ class LinksReplacer:
     # built in code fence skipping (individual link scanners don't
     # have to worry about them.
 
-    def file_exists(self, file_path: str) -> Union[bool, str]:
+    def file_exists(self, file_path: str, source: str) -> Union[bool, str]:
         if (
             file_path.startswith("http://")
             or file_path.startswith("https://")
             or file_path.startswith("mailto:")
             or file_path.startswith("www.")
-        ):
+        ) or posixpath.exists(file_path) or posixpath.exists(file_path + ".md"):
             return True
-        if posixpath.exists(file_path):
-            return True
-        # try with index file
-        if posixpath.exists(file_path.replace(".md", "") + "/index.md"):
-            return "is_index"
 
+        # try with index file
         return False
 
     def compile(self):
@@ -88,10 +85,9 @@ class LinksReplacer:
                     if not link.target:
                         if link.anchor:
                             link.target = posixpath.join(self.root, self.path)
-                            if not self.file_exists(link.target):
+                            file_exists = self.file_exists(link.target, abs_from)
+                            if not file_exists:
                                 broken_link = True
-                            elif self.file_exists(link.target) == "is_index":
-                                link.target = link.target.replace(".md", "") + "/index.md"
                         else:
                             raise BrokenLink(f"No target for link '{match.group(0)}'")
                     else:
@@ -108,10 +104,9 @@ class LinksReplacer:
                             raise BrokenLink(f"'{link.target}' not found.")
                         link.target = search_result
                         broken_link = False
-                        if not self.file_exists(search_result):
+                        file_exists = self.file_exists(search_result, abs_from)
+                        if not file_exists:
                             broken_link = True
-                        elif self.file_exists(search_result) == "is_index":
-                            link.target = link.target.replace(".md", "") + "/index.md"
                         else:
                             link.target = search_result
 
