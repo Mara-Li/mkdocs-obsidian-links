@@ -1,25 +1,22 @@
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
+[project]
 name = "mkdocs-obsidian-links"
 version = "1.0.2"
 description = "A Mkdocs plugin that makes linking to other documents easy."
 authors = ["Mara-Li <lili.simonetti@outlook.fr>"]
 license = "MIT"
 readme = "README.md"
+dependencies = [
+    "mkdocs>=1.4",
+    "pygtrie>=2.3.2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-mkdocs = "*"
-pygtrie = "*"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "*"
-watchdog = "^6.0.0"
-python-semantic-release = "^9.15.2"
-build = "^1.2.2.post1"
+[dependency-groups]
+dev = [
+    "ruff>=0.1.0",
+    "watchdog>=2.1.6",
+    "python-semantic-release>=9.15.2",
+    "build>=0.6.0",
+]
 
 [tool.ruff.lint]
 select = ["PTH", "ANN", "N", "Q", "PL", "E", "F", "I"]
@@ -33,14 +30,6 @@ inline-quotes = "double"
 where = ["."]
 exclude = ["test.*"]
 
-[tool.poetry.plugins."mkdocs.plugins"]
-ezlinks = "mkdocs_obsidian_links.plugin:LinksPlugin"
-
-[tool.poetry-exec-plugin.commands]
-test="cd test && mkdocs serve"
-watch="poetry run python watch_install.py"
-build="python -m build"
-ruff="ruff format"
-silbuphsilbu="poetry publish --build"
-release="poetry run semantic-release publish"
-
+[build-system]
+requires = ["uv"]
+build-backend = "uv.pyproject"

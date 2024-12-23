@@ -1,8 +1,7 @@
 [semantic_release]
 version_toml = [
-    "./pyproject.toml:tool.poetry.version",
+    "pyproject.toml:project.version",
 ]
-version_variables=["./mkdocs_obsidian_links/__init__.py:__version__"]
 
 assets = []
 build_command_env = []
@@ -12,7 +11,7 @@ logging_use_named_masks = false
 major_on_zero = true
 allow_zero_version = true
 no_git_verify = false
-tag_format = "v{version}"
+tag_format = "{version}"
 
 [semantic_release.branches.main]
 match = "(main|master)"

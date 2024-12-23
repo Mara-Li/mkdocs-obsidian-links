@@ -5,6 +5,15 @@ import os
 import time
 import signal
 
+# parse arg
+import argparse
+
+parser = argparse.ArgumentParser(description = "Watch for changes in a package and reinstall it.")
+parser.add_argument("package_path", type = str, help = "Path to the package to watch.")
+parser.add_argument("mkdocs_path", type = str, help = "Path to the MkDocs folder.")
+args = parser.parse_args()
+package_path = args.package_path
+mkdocs_path = args.mkdocs_path
 
 class PackageWatchHandler(FileSystemEventHandler):
     def __init__(self, package_path, mkdocs_path):
@@ -51,8 +60,8 @@ class PackageWatchHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    package_path = "mkdocs_obsidian_links"  # Chemin vers le package
-    mkdocs_path = "./test"  # Chemin vers le dossier contenant MkDocs
+    package_path = package_path  # Chemin vers le package
+    mkdocs_path = mkdocs_path  # Chemin vers le dossier contenant MkDocs
 
     # Vérifie si le dossier MkDocs existe
     if not os.path.isdir(mkdocs_path):
