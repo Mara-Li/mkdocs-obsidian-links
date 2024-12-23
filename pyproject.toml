@@ -1,6 +1,6 @@
 [project]
 name = "mkdocs-obsidian-links"
-version = "1.0.3"
+version = "1.0.4"
 description = "A Mkdocs plugin that makes linking to other documents easy."
 authors = [
     { name = "Mara-Li", email = "mara-li@outlook.fr" }]
