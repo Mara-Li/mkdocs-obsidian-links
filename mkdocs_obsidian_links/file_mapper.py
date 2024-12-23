@@ -1,8 +1,8 @@
 import posixpath
 from typing import List
 
-import pygtrie
 import mkdocs
+import pygtrie
 
 from .types import LinksOptions
 

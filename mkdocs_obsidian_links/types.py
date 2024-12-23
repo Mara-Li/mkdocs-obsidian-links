@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-class BrokenLink(Exception):
+class BrokenLink(Exception):  # noqa: N818
     # Ignore these
     pass
 

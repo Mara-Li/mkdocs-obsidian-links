@@ -1,11 +1,11 @@
-import pathlib
 import posixpath
 import re
 from typing import Match, Union
 from urllib.parse import quote
-from .types import LinksOptions, BrokenLink
-from .scanners.base_link_scanner import BaseLinkScanner
+
 from .file_mapper import FileMapper
+from .scanners.base_link_scanner import BaseLinkScanner
+from .types import BrokenLink, LinksOptions
 
 
 class LinksReplacer:

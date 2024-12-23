@@ -1,16 +1,15 @@
 import logging
 from typing import List
 
-from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+from mkdocs.plugins import BasePlugin
 from mkdocs.structure.files import File
-
 
 from .file_mapper import FileMapper
 from .replacer import LinksReplacer
 from .scanners.md_link_scanner import MdLinkScanner
-from .scanners.wiki_link_scanner import WikiLinkScanner
 from .scanners.reference_link_scanner import ReferenceLinkScanner
+from .scanners.wiki_link_scanner import WikiLinkScanner
 from .types import LinksOptions
 
 LOGGER = logging.getLogger(f"mkdocs.plugins.{__name__}")
