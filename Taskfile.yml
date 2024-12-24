@@ -48,5 +48,4 @@ tasks:
     cmds:
       - task: clean
       - task: version
-      - task: build
       - task: publish
